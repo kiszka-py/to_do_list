@@ -1,5 +1,7 @@
 //jshint esversion:6
 
+require('dotenv').config()
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const date = require(__dirname + "/date.js");
@@ -9,7 +11,13 @@ const _ = require("lodash")
 const app = express();
 
 mongoose.set('strictQuery', false);
-mongoose.connect("mongodb://127.0.0.1:27017/todolistDB");
+const username = process.env.MONGODB_USERNAME;
+const password = process.env.MONGODB_PASSWORD;
+
+// mongoose.connect("mongodb://127.0.0.1:27017/todolistDB");
+mongoose.connect("mongodb+srv://" + username + ":" + password + "@cluster0.umpyx5f.mongodb.net/todolistDB");
+
+
 
 const itemSchema = mongoose.Schema({
   name: {
