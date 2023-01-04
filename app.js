@@ -46,9 +46,6 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-
-// const items = ["Buy Food", "Cook Food", "Eat Food"];
-
 const workItems = [];
 
 app.get("/", function(req, res) {
@@ -112,8 +109,20 @@ app.post("/", function(req, res){
 
 app.post("/delete", (req, res) => {
   const itemToDeleteID = req.body.checkbox;
-  const listName = req.body.listToDelete[0];
+  console.log("listName: " + req.body.listToDelete);
+  console.log("type of listName: " + typeof(req.body.listToDelete));
+
+  // Trzeba sprawdzić kiedy nazwa jest listą a kiedy stringiem
+  if (typeof(req.body.listToDelete) == 'string') {
+    var listName = req.body.listToDelete;
+  } else {
+    var listName = req.body.listToDelete[0];
+  }
+  
   const day = date.getDate();
+
+  console.log("itemToDeleteID: " + itemToDeleteID);
+  
 
   if (listName === day) {
     Item.deleteOne({_id: itemToDeleteID}, (err) => {
